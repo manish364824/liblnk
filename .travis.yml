@@ -1,9 +1,5 @@
 version: ~> 1.0
 language: c
-arch:
- - amd64
- - ppc64le
- 
 os: linux
 dist: focal
 env:
@@ -189,6 +185,212 @@ jobs:
     compiler: gcc
     os: osx
     osx_image: xcode11
+    
+    
+#ppc arch added
+  - name: "Coverity"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - TARGET="coverity"
+    compiler: clang
+    group: edge
+    addons:
+      coverity_scan:
+        project:
+          name: "libyal/liblnk"
+          description: "Build submitted via Travis CI"
+        notification_email: joachim.metz@gmail.com
+        build_command_prepend: "./synclibs.sh && ./autogen.sh && ./configure"
+        build_command: "make -j4"
+        branch_pattern: master
+  - name: "Linux with clang"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-clang"
+    compiler: clang
+    group: edge
+  - name: "Linux with gcc"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc on ppc64le"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc"
+    arch: ppc64le
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc on s390x"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc"
+    arch: s390x
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc and wide character type (wchar_t) support"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-wide-character-type"
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc-wide-character-type"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc without optimization"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-shared=no --enable-wide-character-type"
+    - CFLAGS="--coverage -O0"
+    - CPPFLAGS="-DOPTIMIZATION_DISABLED"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc-no-optimization"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc and Python module"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-python"
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc-python"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc and Python 2 module"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-python2"
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - PYTHON_VERSION=2
+    - TARGET="linux-gcc-python2"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc and Python 3 module"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-python3"
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - PYTHON_VERSION=3
+    - TARGET="linux-gcc-python3"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc and Python 2 module (setup.py)"
+  - arch: ppc64le
+    env:
+    - TARGET="linux-gcc-python-setup-py"
+    compiler: gcc
+    group: edge
+    python: 2.7
+  - name: "Linux with gcc and Python 3 module (setup.py)"
+  - arch: ppc64le
+    env:
+    - TARGET="linux-gcc-python-setup-py"
+    compiler: gcc
+    group: edge
+    python: 3.6
+  - name: "Linux with gcc and shared libraries"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc-shared"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc, shared libraries and wide character type (wchar_t) support"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-wide-character-type"
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc-shared-wide-character-type"
+    compiler: gcc
+    group: edge
+  - name: "Linux with gcc and static executables support"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-static-executables=yes --enable-multi-threading-support=no"
+    - CFLAGS="--coverage"
+    - LDFLAGS="--coverage"
+    - TARGET="linux-gcc-static-executables"
+    compiler: gcc
+    group: edge
+  - name: "Mac OS 10.14 with clang"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - TARGET="macos-clang"
+    compiler: clang
+    os: osx
+    osx_image: xcode11
+  - name: "Mac OS 10.14 with gcc"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS=""
+    - TARGET="macos-gcc"
+    compiler: gcc
+    os: osx
+    osx_image: xcode11
+  - name: "Mac OS 10.14 with gcc and Python module"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-python"
+    - TARGET="macos-gcc-python"
+    compiler: gcc
+    os: osx
+    osx_image: xcode11
+  - name: "Mac OS 10.14 with gcc and Python 2 module"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--enable-python2"
+    - PYTHON_VERSION=2
+    - TARGET="macos-gcc-python2"
+    compiler: gcc
+    os: osx
+    osx_image: xcode11
+  - name: "Mac OS 10.14 with gcc and Python 2 module (setup.py)"
+  - arch: ppc64le
+    env:
+    - TARGET="macos-gcc-python-setup-py"
+    compiler: gcc
+    os: osx
+    osx_image: xcode11
+  - name: "Mac OS 10.14 with gcc and Python 3.8 module (setup.py)"
+  - arch: ppc64le
+    env:
+    - TARGET="macos-gcc-python-setup-py38"
+    compiler: gcc
+    os: osx
+    osx_image: xcode11
+    language: shell
+  - name: "Mac OS 10.14 with gcc and Python module and pkgbuild"
+  - arch: ppc64le
+    env:
+    - CONFIGURE_OPTIONS="--disable-dependency-tracking --prefix=/usr/local --enable-python --with-pyprefix"
+    - TARGET="macos-gcc-pkgbuild"
+    compiler: gcc
+    os: osx
+    osx_image: xcode11
+
+
+
+
 before_install:
 - .travis/before_install.sh
 install:
